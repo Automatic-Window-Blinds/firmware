@@ -1,25 +1,22 @@
 ---
-# We use LLVM as a base because it provides a neutral starting point,
-# then we override the specific keys to match VS Code's default style.
-BasedOnStyle: LLVM
+BasedOnStyle: Google
 
-# Indentation
+# Formatting
 IndentWidth: 4
 TabWidth: 4
-UseTab: Always
-
-BreakBeforeBraces: Allman
-
+UseTab: Never
 ColumnLimit: 120
 
-IndentCaseLabels: false
+# Braces
+BreakBeforeBraces: Attach
 
-# Dedent 'public:', 'private:', etc. so they align with the class definition
-AccessModifierOffset: -4
-
-AllowShortFunctionsOnASingleLine: Empty
-AllowShortIfStatementsOnASingleLine: false
-PointerAlignment: Left
-
+# Order
 SortIncludes: true
-...
+
+# Pointers
+PointerAlignment: Left # char* data
+
+# Access Modifiers
+AccessModifierOffset: -4 # Keep 'public:' aligned with class start
+
+AllowShortFunctionsOnASingleLine: Inline
