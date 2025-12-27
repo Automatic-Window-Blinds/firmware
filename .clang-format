@@ -1,0 +1,22 @@
+---
+BasedOnStyle: Google
+
+# Formatting
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 120
+
+# Braces
+BreakBeforeBraces: Attach
+
+# Order
+SortIncludes: true
+
+# Pointers
+PointerAlignment: Left # char* data
+
+# Access Modifiers
+AccessModifierOffset: -4 # Keep 'public:' aligned with class start
+
+AllowShortFunctionsOnASingleLine: Inline
