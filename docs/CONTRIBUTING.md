@@ -44,6 +44,10 @@ We follow a **Feature Branch** workflow with subsystem prefixes.
 
 4. **Push & PR:** Push your branch to GitHub and open a Pull Request against `main`
 
+## Example PR
+
+For an example PR, see [PR #1](https://github.com/Automatic-Window-Blinds/firmware/pull/1). Feel free to follow this as a reference.
+
 ## Code Review Checklist
 
 Before marking your PR as ready, please check:
