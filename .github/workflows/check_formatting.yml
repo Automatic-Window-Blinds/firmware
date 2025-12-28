@@ -1,6 +1,13 @@
 name: Check Code Formatting
 
-on: [push, pull_request]
+on:
+    # Run on PRs to ensure the code is safe to merge
+    pull_request:
+
+    # Only run on push if it is to the main branch (post-merge)
+    push:
+        branches:
+            - main
 
 jobs:
     clang-format-checking:
