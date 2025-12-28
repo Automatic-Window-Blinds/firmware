@@ -1,6 +1,6 @@
-#include "logger.hpp"
+#include "hal/uart.hpp"
 #include "stm32l4xx_hal.h"
-#include "uart.hpp"
+#include "util/logger.hpp"
 
 // Currently we are targeting the Nucleo-L476RG board because that is all I have on hand.
 // Once we get the actual board (Nucleo-L432KC), we can change the pin definitions.
@@ -14,7 +14,7 @@
 // Function Prototypes
 static void MX_GPIO_Init(void);
 
-UartConfig console_config = {
+hal::UartConfig console_config = {
     .instance = USART2,
     .baud_rate = 115200,
     .word_length = UART_WORDLENGTH_8B,
@@ -32,7 +32,7 @@ int main(void) {
 
     MX_GPIO_Init();
 
-    Uart console_uart(console_config);
+    hal::Uart console_uart(console_config);
     bool console_init = console_uart.Init();
     if (!console_init) {
         // UART Initialization Failed
@@ -69,33 +69,3 @@ static void MX_GPIO_Init(void) {
     gpio_init_struct.Speed = GPIO_SPEED_FREQ_HIGH;
     HAL_GPIO_Init(LED_PORT, &gpio_init_struct);
 }
-
-// ----------------------------------------------------------------------------
-// INTERRUPT IMPLEMENTATIONS
-// ----------------------------------------------------------------------------
-
-extern "C" void SysTick_Handler(void) {
-    HAL_IncTick();
-}
-
-// Dummy handlers to avoid getting stuck in the Default_Handler if a fault occurs
-extern "C" void NMI_Handler(void) {}
-extern "C" void HardFault_Handler(void) {
-    while (1) {
-    }
-}
-extern "C" void MemManage_Handler(void) {
-    while (1) {
-    }
-}
-extern "C" void BusFault_Handler(void) {
-    while (1) {
-    }
-}
-extern "C" void UsageFault_Handler(void) {
-    while (1) {
-    }
-}
-extern "C" void SVC_Handler(void) {}
-extern "C" void DebugMon_Handler(void) {}
-extern "C" void PendSV_Handler(void) {}

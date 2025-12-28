@@ -3,8 +3,7 @@
 #include <cstdarg>
 #include <cstdio>
 
-#include "stm32l4xx_hal.h"
-#include "uart.hpp"
+#include "hal/uart.hpp"
 
 class Logger {
 public:
@@ -24,7 +23,7 @@ public:
      * @brief Initializes the Logger with a UART transport.
      * @param uart Pointer to the initialized UART driver.
      */
-    void Init(Uart* uart);
+    void Init(hal::Uart* uart);
 
     /**
      * @brief  Transmits raw data over UART.
@@ -101,5 +100,5 @@ public:
 private:
     Logger() = default;
 
-    Uart* transport_ = nullptr;
+    hal::Uart* transport_ = nullptr;
 };

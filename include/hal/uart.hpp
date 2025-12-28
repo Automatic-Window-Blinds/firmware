@@ -2,6 +2,8 @@
 
 #include "stm32l4xx_hal.h"
 
+namespace hal {
+
 enum class UartPins {
     NUCLEO_L476RG = GPIO_PIN_2 | GPIO_PIN_3,  // TX=PA2, RX=PA3
 };
@@ -60,3 +62,5 @@ public:
 private:
     UART_HandleTypeDef huart_{};
 };
+
+}  // namespace hal
