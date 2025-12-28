@@ -1,4 +1,4 @@
-#include "logger.hpp"
+#include "util/logger.hpp"
 
 #include <inttypes.h>
 #include <unistd.h>  // For STDOUT_FILENO
@@ -11,7 +11,7 @@ Logger& Logger::GetInstance() {
     return instance;
 }
 
-void Logger::Init(Uart* uart) {
+void Logger::Init(hal::Uart* uart) {
     transport_ = uart;
 }
 
