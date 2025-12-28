@@ -74,7 +74,9 @@ static void MX_GPIO_Init(void) {
 // INTERRUPT IMPLEMENTATIONS
 // ----------------------------------------------------------------------------
 
-extern "C" void SysTick_Handler(void) { HAL_IncTick(); }
+extern "C" void SysTick_Handler(void) {
+    HAL_IncTick();
+}
 
 // Dummy handlers to avoid getting stuck in the Default_Handler if a fault occurs
 extern "C" void NMI_Handler(void) {}
