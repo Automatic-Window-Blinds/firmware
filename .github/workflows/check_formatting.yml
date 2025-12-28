@@ -1,0 +1,12 @@
+name: Check Code Formatting
+
+on: [push, pull_request]
+
+jobs:
+    clang-format-checking:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: RafikFarhad/clang-format-github-action@v3
+              with:
+                  sources: "**/*.hpp,**/*.cpp,**/*.c,**/*.h"
