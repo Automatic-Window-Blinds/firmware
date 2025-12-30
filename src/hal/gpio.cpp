@@ -62,6 +62,7 @@ void Gpio::Toggle() {
 }
 
 bool Gpio::IsHigh() const {
+    if (!is_initialized_ || !is_input_) return false;
     return HAL_GPIO_ReadPin(detail::PortPtr(pin_.port), pin_.mask) == GPIO_PIN_SET;
 }
 
