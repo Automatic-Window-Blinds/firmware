@@ -1,7 +1,6 @@
 #pragma once
 
 #include "hal/gpio_types.hpp"
-#include "stm32l4xx_hal.h"
 
 namespace hal::detail {
 

@@ -1,12 +1,6 @@
 #include "hal/gpio.hpp"
 
-#include "stm32l4xx_hal_gpio.h"
-
 namespace hal {
-
-void Gpio::EnableClock() {
-    detail::EnableGpioClock(pin_.port);
-}
 
 void Gpio::ConfigureOutput(OutputType type, Speed speed, Pull pull) {
     if (is_initialized_) return;
@@ -27,6 +21,10 @@ void Gpio::ConfigureInput(Pull pull) {
     is_input_ = true;
 }
 
+void Gpio::ConfigureAnalog() {
+    detail::ConfigureGpio(pin_.port, pin_.mask, GPIO_MODE_ANALOG, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW);
+}
+
 void Gpio::ConfigureAlternate(uint8_t af_num, OutputType type, Pull pull, Speed speed) {
     if (is_initialized_) return;
 
@@ -37,21 +35,15 @@ void Gpio::ConfigureAlternate(uint8_t af_num, OutputType type, Pull pull, Speed 
 }
 
 void Gpio::Write(Level level) {
-    if (!is_initialized_ || !is_output_) {
-        return;
-    }
-
-    GPIO_PinState pin_state = (level == Level::High) ? GPIO_PIN_SET : GPIO_PIN_RESET;
-
-    HAL_GPIO_WritePin(detail::PortPtr(pin_.port), pin_.mask, pin_state);
+    Write(level == Level::High);
 }
 
 void Gpio::Write(bool high) {
-    Write(high ? Level::High : Level::Low);
+    high ? Set() : Clear();
 }
 
 void Gpio::Write(int v) {
-    Write(v != 0 ? Level::High : Level::Low);
+    Write(v != 0);
 }
 
 void Gpio::Set() {
@@ -69,9 +61,16 @@ void Gpio::Toggle() {
     HAL_GPIO_TogglePin(detail::PortPtr(pin_.port), pin_.mask);
 }
 
-void ConfigureAlternatePin(const AfPinConfig& config) {
-    detail::ConfigureGpio(config.pin.port, config.pin.mask, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW,
-                          config.af_num);
+bool Gpio::IsHigh() const {
+    return HAL_GPIO_ReadPin(detail::PortPtr(pin_.port), pin_.mask) == GPIO_PIN_SET;
+}
+
+int Gpio::Read() const {
+    return IsHigh() ? 1 : 0;
+}
+
+Level Gpio::ReadLevel() const {
+    return IsHigh() ? Level::High : Level::Low;
 }
 
 }  // namespace hal

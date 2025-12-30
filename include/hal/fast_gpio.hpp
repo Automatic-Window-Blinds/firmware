@@ -2,7 +2,6 @@
 
 #include "hal/gpio_impl.hpp"
 #include "hal/gpio_types.hpp"
-#include "stm32l4xx_hal_gpio.h"
 
 namespace hal {
 
@@ -22,14 +21,14 @@ public:
         detail::ConfigureGpio(PORT, PIN, GPIO_MODE_INPUT, detail::PullToGpioPull(pull), GPIO_SPEED_FREQ_LOW);
     }
 
+    static void ConfigureAnalog() {
+        detail::ConfigureGpio(PORT, PIN, GPIO_MODE_ANALOG, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW);
+    }
+
     static void ConfigureAlternate(uint8_t af_num, OutputType type = OutputType::PushPull, Speed speed = Speed::Low,
                                    Pull pull = Pull::None) {
         detail::ConfigureGpio(PORT, PIN, detail::OutputTypeToAfMode(type), detail::SpeedToGpioSpeed(speed),
                               detail::PullToGpioPull(pull), af_num);
-    }
-
-    static void ConfigureAnalog() {
-        detail::ConfigureGpio(PORT, PIN, GPIO_MODE_ANALOG, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW);
     }
 
     static void DeInit() { HAL_GPIO_DeInit(detail::PortPtr(PORT), PIN); }
@@ -38,26 +37,17 @@ public:
 
     [[gnu::always_inline]]
     static inline void Write(int v) {
-        if (v != 0)
-            Set();
-        else
-            Clear();
+        Write(v != 0);
     }
 
     [[gnu::always_inline]]
     static inline void Write(bool high) {
-        if (high)
-            Set();
-        else
-            Clear();
+        high ? Set() : Clear();
     }
 
     [[gnu::always_inline]]
     static inline void Write(Level level) {
-        if (level == Level::High)
-            Set();
-        else
-            Clear();
+        Write(level == Level::High);
     }
 
     [[gnu::always_inline]]
