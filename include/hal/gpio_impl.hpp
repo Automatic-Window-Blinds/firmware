@@ -4,6 +4,11 @@
 
 namespace hal::detail {
 
+/**
+ * @brief Converts an OutputType to a GPIO alternate function mode constant.
+ * @param type The output driver type (PushPull or OpenDrain).
+ * @return HAL GPIO alternate function mode constant.
+ */
 static inline uint32_t OutputTypeToAfMode(const OutputType type) {
     switch (type) {
         case hal::OutputType::OpenDrain:
@@ -13,6 +18,11 @@ static inline uint32_t OutputTypeToAfMode(const OutputType type) {
             return GPIO_MODE_AF_PP;
     }
 }
+/**
+ * @brief Converts an OutputType to a GPIO output mode constant.
+ * @param type The output driver type (PushPull or OpenDrain).
+ * @return HAL GPIO output mode constant.
+ */
 static inline uint32_t OutputTypeToGpioMode(const OutputType type) {
     switch (type) {
         case hal::OutputType::OpenDrain:
@@ -23,6 +33,11 @@ static inline uint32_t OutputTypeToGpioMode(const OutputType type) {
     }
 }
 
+/**
+ * @brief Converts a Speed enumeration to a GPIO speed constant.
+ * @param speed The desired switching speed (Low, Medium, High, or VeryHigh).
+ * @return HAL GPIO speed constant.
+ */
 static inline uint32_t SpeedToGpioSpeed(const Speed speed) {
     switch (speed) {
         case hal::Speed::Medium:
@@ -37,6 +52,11 @@ static inline uint32_t SpeedToGpioSpeed(const Speed speed) {
     }
 }
 
+/**
+ * @brief Converts a Pull enumeration to a GPIO pull configuration constant.
+ * @param pull The pull resistor configuration (None, Up, or Down).
+ * @return HAL GPIO pull configuration constant.
+ */
 static inline uint32_t PullToGpioPull(const Pull pull) {
     switch (pull) {
         case hal::Pull::Up:
@@ -49,6 +69,11 @@ static inline uint32_t PullToGpioPull(const Pull pull) {
     }
 }
 
+/**
+ * @brief Enables the peripheral clock for the specified GPIO port.
+ * @param port_base The GPIO port base address (GPIOA_BASE, GPIOB_BASE, etc.).
+ * @details Without calling this, GPIO registers remain frozen and inaccessible.
+ */
 static inline void EnableGpioClock(const PortBase port_base) {
     switch (port_base) {
         case GPIOA_BASE:
@@ -69,10 +94,25 @@ static inline void EnableGpioClock(const PortBase port_base) {
     }
 }
 
+/**
+ * @brief Converts a PortBase address to a GPIO_TypeDef pointer for HAL use.
+ * @param p The GPIO port base address.
+ * @return Pointer to the GPIO_TypeDef structure.
+ */
 static inline GPIO_TypeDef* PortPtr(const PortBase& p) {
     return reinterpret_cast<GPIO_TypeDef*>(p);
 }
 
+/**
+ * @brief Configures a GPIO pin with the specified mode and characteristics.
+ * @param port    The GPIO port base address.
+ * @param pin     The pin mask (e.g., GPIO_PIN_5).
+ * @param mode    The GPIO mode constant (input, output, alternate, analog).
+ * @param pull    The pull resistor configuration.
+ * @param speed   The switching speed.
+ * @param af_num  The alternate function number (0-15, default 0 for non-alternate modes).
+ * @details Automatically enables the GPIO port clock before configuration.
+ */
 static inline void ConfigureGpio(PortBase port, PinMask pin, uint32_t mode, uint32_t pull, uint32_t speed,
                                  uint32_t af_num = 0) {
     EnableGpioClock(port);

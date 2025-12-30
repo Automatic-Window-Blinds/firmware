@@ -20,7 +20,6 @@ hal::UartConfig console_config = {
 };
 
 // The Nucleo-L476RG Green LED is connected to PA5
-// hal::Gpio status_led(GPIOA_BASE, GPIO_PIN_5);
 using StatusLed = hal::FastGpio<GPIOA_BASE, GPIO_PIN_5>;
 
 int main(void) {
@@ -28,7 +27,6 @@ int main(void) {
     // configures the SysTick to generate an interrupt every 1ms, and sets NVIC.
     HAL_Init();
 
-    // status_led.ConfigureOutput(hal::OutputType::PushPull, hal::Speed::Low);
     StatusLed::ConfigureOutput(hal::OutputType::PushPull, hal::Speed::Low);
 
     hal::Uart console_uart(console_config);
@@ -46,7 +44,6 @@ int main(void) {
     int count = 0;
 
     while (1) {
-        // status_led.Toggle();
         StatusLed::Toggle();
         HAL_Delay(1000);
         logger.Logf("Toggled LED %d\r\n", count++);
