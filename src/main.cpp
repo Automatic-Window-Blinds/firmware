@@ -1,18 +1,11 @@
+#include "hal/gpio.hpp"
+#include "hal/gpio_types.hpp"
 #include "hal/uart.hpp"
 #include "stm32l4xx_hal.h"
 #include "util/logger.hpp"
 
 // Currently we are targeting the Nucleo-L476RG board because that is all I have on hand.
 // Once we get the actual board (Nucleo-L432KC), we can change the pin definitions.
-
-// The Nucleo-L476RG Green LED is connected to PA5
-#define LED_PIN GPIO_PIN_5
-#define LED_PORT GPIOA
-
-#define LD2_Pin
-
-// Function Prototypes
-static void MX_GPIO_Init(void);
 
 hal::UartConfig console_config = {
     .instance = USART2,
@@ -25,12 +18,15 @@ hal::UartConfig console_config = {
     .over_sampling = UART_OVERSAMPLING_16,
 };
 
+// The Nucleo-L476RG Green LED is connected to PA5
+hal::Gpio status_led(GPIOA_BASE, GPIO_PIN_5);
+
 int main(void) {
     // This must be the first function called. It sets up the Flash prefetch,
     // configures the SysTick to generate an interrupt every 1ms, and sets NVIC.
     HAL_Init();
 
-    MX_GPIO_Init();
+    status_led.ConfigureOutput(hal::OutputType::PushPull, hal::Speed::Low);
 
     hal::Uart console_uart(console_config);
     bool console_init = console_uart.Init();
@@ -47,25 +43,8 @@ int main(void) {
     int count = 0;
 
     while (1) {
-        HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+        status_led.Toggle();
         HAL_Delay(1000);
         logger.Logf("Toggled LED %d\r\n", count++);
     }
-}
-
-// Configure the LED Pin as Output
-static void MX_GPIO_Init(void) {
-    GPIO_InitTypeDef gpio_init_struct = {0};
-
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-
-    // Configure GPIO pin Output Level
-    HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_RESET);
-
-    // Configure Pin Attributes
-    gpio_init_struct.Pin = LED_PIN;
-    gpio_init_struct.Mode = GPIO_MODE_OUTPUT_PP;  // Push-Pull
-    gpio_init_struct.Pull = GPIO_PULLUP;
-    gpio_init_struct.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(LED_PORT, &gpio_init_struct);
 }

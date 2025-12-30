@@ -1,5 +1,5 @@
 #include "board/boards/nucleo_l476rg.hpp"
-#include "hal/uart.hpp"
+#include "hal/gpio.hpp"
 
 #ifndef CPPCHECK
 
@@ -12,8 +12,8 @@ extern "C" void HAL_UART_MspInit(UART_HandleTypeDef* huart) {
 
     __HAL_RCC_USART2_CLK_ENABLE();
 
-    hal::InitAfPin(board::pins::kConsoleUartPins.tx);
-    hal::InitAfPin(board::pins::kConsoleUartPins.rx);
+    hal::ConfigureAlternatePin(board::pins::kConsoleTx);
+    hal::ConfigureAlternatePin(board::pins::kConsoleRx);
 }
 
 #endif  // CPPCHECK

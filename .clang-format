@@ -19,4 +19,4 @@ PointerAlignment: Left # char* data
 # Access Modifiers
 AccessModifierOffset: -4 # Keep 'public:' aligned with class start
 
-AllowShortFunctionsOnASingleLine: Inline
+AllowShortFunctionsOnASingleLine: InlineOnly # I hate when it shortens empty

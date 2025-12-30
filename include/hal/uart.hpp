@@ -1,19 +1,9 @@
 #pragma once
 
-#include "hal/af_pin.hpp"
 #include "hal/gpio.hpp"
 #include "stm32l4xx_hal.h"
 
 namespace hal {
-
-struct UartPins {
-    AfPin tx;
-    AfPin rx;
-};
-
-// enum class UartPins {
-//     NUCLEO_L476RG = GPIO_PIN_2 | GPIO_PIN_3,  // TX=PA2, RX=PA3
-// };
 
 struct UartConfig {
     USART_TypeDef* instance;  // e.g., USART2, USART1
