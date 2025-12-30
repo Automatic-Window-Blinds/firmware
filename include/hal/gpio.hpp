@@ -1,5 +1,6 @@
 #pragma once
 
+#include "hal/gpio_impl.hpp"
 #include "hal/gpio_types.hpp"
 
 namespace hal {
@@ -38,9 +39,18 @@ public:
      */
     void ConfigureInput(Pull pull = Pull::None);
 
+    void ConfigureAnalog();
+
+    void ConfigureAlternate(uint8_t af_num, OutputType type = OutputType::PushPull, Pull pull = Pull::None,
+                            Speed speed = Speed::Low);
+
+    void DeInit() { HAL_GPIO_DeInit(hal::detail::PortPtr(pin_.port), pin_.mask); }
+
     // -----------------------------------------------------------------------
     // Control / Access
     // -----------------------------------------------------------------------
+
+    void Lock() { HAL_GPIO_LockPin(hal::detail::PortPtr(pin_.port), pin_.mask); }
 
     void Write(Level level);
     void Write(bool high);
