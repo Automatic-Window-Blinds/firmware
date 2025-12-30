@@ -13,8 +13,8 @@ namespace hal {
 using PortBase = std::uintptr_t;
 
 /**
- * @brief  Bitmask representing a specific pin number (0-15).
- * @example GPIO_PIN_5
+ * @brief  Bitmask type where each bit represents one GPIO pin (0-15).
+ * @note   Use STM32 HAL pin definitions (e.g. GPIO_PIN_5 = 0x0020, bit 5 set).
  */
 using PinMask = std::uint16_t;
 
