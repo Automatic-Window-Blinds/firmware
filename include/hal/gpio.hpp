@@ -140,11 +140,29 @@ public:
     Pin GetPin() const { return pin_; }
 
 private:
+    /**
+     * @brief Represents the current configuration mode of the GPIO pin.
+     */
+    enum class GpioMode {
+        Uninitialized,
+        Input,
+        Output,
+        Analog,
+        Alternate,
+    };
+
     Pin pin_;
 
+    // Tracks whether the pin has ever been configured.
     bool is_initialized_ = false;
-    bool is_output_ = false;
-    bool is_input_ = false;
+
+    // Tracks the current configuration mode of the pin.
+    GpioMode mode_ = GpioMode::Uninitialized;
+
+    bool IsInput_() const { return mode_ == GpioMode::Input; }
+    bool IsOutput_() const { return mode_ == GpioMode::Output; }
+    bool IsAlternate_() const { return mode_ == GpioMode::Alternate; }
+    bool IsAnalog_() const { return mode_ == GpioMode::Analog; }
 };
 
 }  // namespace hal
