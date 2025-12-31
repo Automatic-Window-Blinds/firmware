@@ -1,4 +1,7 @@
 #pragma once
+
+#include <stm32l4xx_hal.h>
+
 #include <cstdint>
 
 #include "hal/fast_gpio.hpp"
