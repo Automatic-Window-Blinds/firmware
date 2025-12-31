@@ -25,7 +25,7 @@ int main(void) {
     // configures the SysTick to generate an interrupt every 1ms, and sets NVIC.
     HAL_Init();
 
-    StatusLed::ConfigureOutput(hal::OutputType::PushPull, hal::Speed::Low);
+    StatusLed::ConfigureOutput(hal::OutputType::PushPull, hal::Speed::Low, hal::Pull::Up);
 
     hal::Uart console_uart(console_config);
     bool console_init = console_uart.Init();

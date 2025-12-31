@@ -38,7 +38,8 @@ enum class Pull : std::uint8_t {
 /**
  * @brief  Output slew rate control (Max frequencies at 3.3V, 50pF load).
  * @note   Higher speeds increase power consumption and EMI noise.
- * See STM32L432KC Datasheet DS11451 Table 61.
+ * Refer to the target MCU's datasheet for exact GPIO output speed characteristics
+ * (For STM32L432KC: Datasheet DS11451 Table 61).
  */
 enum class Speed : std::uint8_t {
     Low,      ///< Low Speed (up to 5 MHz) - Best for GPIO, LEDs, Buttons
