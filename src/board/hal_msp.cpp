@@ -7,7 +7,7 @@
 // This is called automatically by HAL_UART_Init()
 // ----------------------------------------------------------------------------
 extern "C" void HAL_UART_MspInit(UART_HandleTypeDef* huart) {
-    if (huart->Instance != reinterpret_cast<USART_TypeDef*>(board::pins::kConsoleUartBase)) return;
+    if (huart->Instance != reinterpret_cast<USART_TypeDef*>(board::pins::CONSOLE_UART_BASE)) return;
 
     __HAL_RCC_USART2_CLK_ENABLE();
 
