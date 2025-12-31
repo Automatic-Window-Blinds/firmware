@@ -58,12 +58,12 @@ public:
      * @brief Configures the pin for an alternate function (UART, SPI, etc.).
      * @param af_num The alternate function number (0-15, device-specific).
      * @param type   Output driver type (default: PushPull).
-     * @param pull   Pull resistor configuration (default: None).
      * @param speed  Switching speed (default: Low).
+     * @param pull   Pull resistor configuration (default: None).
      * @details Automatically enables the GPIO port clock.
      */
-    void ConfigureAlternate(uint8_t af_num, OutputType type = OutputType::PushPull, Pull pull = Pull::None,
-                            Speed speed = Speed::Low);
+    void ConfigureAlternate(uint8_t af_num, OutputType type = OutputType::PushPull, Speed speed = Speed::Low,
+                            Pull pull = Pull::None);
 
     /**
      * @brief Resets the GPIO pin to its default state.

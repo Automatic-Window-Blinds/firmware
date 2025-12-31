@@ -25,7 +25,7 @@ void Gpio::ConfigureAnalog() {
     detail::ConfigureGpio(pin_.port, pin_.mask, GPIO_MODE_ANALOG, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW);
 }
 
-void Gpio::ConfigureAlternate(uint8_t af_num, OutputType type, Pull pull, Speed speed) {
+void Gpio::ConfigureAlternate(uint8_t af_num, OutputType type, Speed speed, Pull pull) {
     if (is_initialized_) return;
 
     detail::ConfigureGpio(pin_.port, pin_.mask, detail::OutputTypeToAfMode(type), detail::PullToGpioPull(pull),

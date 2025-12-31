@@ -30,8 +30,8 @@ public:
      */
     static void ConfigureOutput(OutputType type = OutputType::PushPull, Speed speed = Speed::Low,
                                 Pull pull = Pull::None) {
-        detail::ConfigureGpio(PORT, PIN, detail::OutputTypeToGpioMode(type), detail::SpeedToGpioSpeed(speed),
-                              detail::PullToGpioPull(pull));
+        detail::ConfigureGpio(PORT, PIN, detail::OutputTypeToGpioMode(type), detail::PullToGpioPull(pull),
+                              detail::SpeedToGpioSpeed(speed));
     }
 
     /**
@@ -59,8 +59,8 @@ public:
      */
     static void ConfigureAlternate(uint8_t af_num, OutputType type = OutputType::PushPull, Speed speed = Speed::Low,
                                    Pull pull = Pull::None) {
-        detail::ConfigureGpio(PORT, PIN, detail::OutputTypeToAfMode(type), detail::SpeedToGpioSpeed(speed),
-                              detail::PullToGpioPull(pull), af_num);
+        detail::ConfigureGpio(PORT, PIN, detail::OutputTypeToAfMode(type), detail::PullToGpioPull(pull),
+                              detail::SpeedToGpioSpeed(speed), af_num);
     }
 
     /**
