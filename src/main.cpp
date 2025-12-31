@@ -1,6 +1,4 @@
 #include "hal/fast_gpio.hpp"
-#include "hal/gpio.hpp"
-#include "hal/gpio_types.hpp"
 #include "hal/uart.hpp"
 #include "stm32l4xx_hal.h"
 #include "util/logger.hpp"
