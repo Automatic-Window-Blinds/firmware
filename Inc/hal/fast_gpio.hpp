@@ -22,46 +22,8 @@ public:
     // Prevent instantiation
     FastGpio() = delete;
 
-    /**
-     * @brief Configures the pin as a digital output.
-     * @param type  Output driver type (default: PushPull).
-     * @param speed Switching speed (default: Low).
-     * @param pull  Pull resistor configuration (default: None).
-     */
-    static void ConfigureOutput(OutputType type = OutputType::PushPull, Speed speed = Speed::Low,
-                                Pull pull = Pull::None) {
-        detail::ConfigureGpio(PORT, PIN, detail::OutputTypeToGpioMode(type), detail::PullToGpioPull(pull),
-                              detail::SpeedToGpioSpeed(speed));
-    }
-
-    /**
-     * @brief Configures the pin as a digital input.
-     * @param pull Pull resistor configuration (default: None).
-     */
-    static void ConfigureInput(Pull pull = Pull::None) {
-        detail::ConfigureGpio(PORT, PIN, GPIO_MODE_INPUT, detail::PullToGpioPull(pull), GPIO_SPEED_FREQ_LOW);
-    }
-
-    /**
-     * @brief Configures the pin for analog input.
-     * @details Disconnects digital logic from the pin, leaving it available for an ADC driver to read.
-     */
-    static void ConfigureAnalog() {
-        detail::ConfigureGpio(PORT, PIN, GPIO_MODE_ANALOG, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW);
-    }
-
-    /**
-     * @brief Configures the pin for an alternate function (UART, SPI, etc.).
-     * @param af_num Alternate function number (0-15, device-specific).
-     * @param type   Output driver type (default: PushPull).
-     * @param speed  Switching speed (default: Low).
-     * @param pull   Pull resistor configuration (default: None).
-     */
-    static void ConfigureAlternate(uint8_t af_num, OutputType type = OutputType::PushPull, Speed speed = Speed::Low,
-                                   Pull pull = Pull::None) {
-        detail::ConfigureGpio(PORT, PIN, detail::OutputTypeToAfMode(type), detail::PullToGpioPull(pull),
-                              detail::SpeedToGpioSpeed(speed), af_num);
-    }
+    static constexpr PortBase kPort = PORT;
+    static constexpr PinMask kPin = PIN;
 
     /**
      * @brief Resets the GPIO pin to its default state.
