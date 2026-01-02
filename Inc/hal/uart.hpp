@@ -1,20 +1,8 @@
 #pragma once
 
-#include "hal/gpio.hpp"
-#include "stm32l4xx_hal.h"
+#include <stm32l4xx_hal.h>
 
 namespace hal {
-
-// struct UartConfig {
-//     USART_TypeDef* instance;  // e.g., USART2, USART1
-//     uint32_t baud_rate;       // e.g., 115200
-//     uint32_t word_length;     // e.g., UART_WORDLENGTH_8B
-//     uint32_t stop_bits;       // e.g., UART_STOPBITS_1
-//     uint32_t parity;          // e.g., UART_PARITY_NONE
-//     uint32_t mode;            // e.g., UART_MODE_TX_RX
-//     uint32_t hw_flow_ctrl;    // e.g., UART_HWCONTROL_NONE
-//     uint32_t over_sampling;   // e.g., UART_OVERSAMPLING_16
-// };
 
 class Uart final {
 public:
@@ -23,16 +11,7 @@ public:
      * @param config Configuration for the underlying HAL UART peripheral.
      * @note This constructor only stores configuration; call Init() before use.
      */
-    // explicit Uart(const UartConfig& config);
     explicit Uart(const UART_HandleTypeDef& huart) : huart_(huart) {}
-
-    /**
-     * @brief Initialize the UART peripheral based on the stored configuration.
-     * @return true if initialization succeeds; false otherwise.
-     * @details Internally calls HAL_UART_Init(), which triggers HAL_UART_MspInit()
-     *          to configure clocks and pins.
-     */
-    // bool Init() { return HAL_UART_Init(&huart_) == HAL_OK; }
 
     /**
      * @brief Generic write function.
