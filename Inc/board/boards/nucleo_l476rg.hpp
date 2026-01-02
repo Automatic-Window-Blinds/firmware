@@ -13,4 +13,6 @@ using ConsoleRx = hal::FastGpio<GPIOA_BASE, GPIO_PIN_3>;
 
 inline constexpr std::uintptr_t CONSOLE_UART_BASE = USART2_BASE;
 
+using StatusLed = hal::FastGpio<GPIOA_BASE, GPIO_PIN_5>;
+
 }  // namespace board::pins
