@@ -6,6 +6,9 @@
 // TODO: Need to change reads and writes to use registers directly for speed
 
 namespace hal {
+namespace detail {
+void RegisterExtiCallback(uint8_t index, void (*cb)(void));
+}
 
 /**
  * @class FastGpio
@@ -34,6 +37,18 @@ public:
      * @brief Locks the GPIO pin configuration to prevent accidental modification.
      */
     static void Lock() { HAL_GPIO_LockPin(detail::PortPtr(PORT), PIN); }
+
+    /**
+     * @brief Registers a function to be called when this pin triggers an interrupt.
+     * @param callback Function pointer (void function(void)).
+     * @warning You must Enable the EXTI Interrupt in CubeMX NVIC settings!
+     */
+    static void AttachInterrupt(void (*callback)(void)) {
+        constexpr uint8_t pin_index = __builtin_ctz(PIN);
+
+        // Register the callback in our central array
+        detail::RegisterExtiCallback(pin_index, callback);
+    }
 
     /**
      * @brief Writes an integer value to the pin (non-zero = HIGH, zero = LOW).

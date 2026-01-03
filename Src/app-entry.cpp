@@ -20,7 +20,13 @@ std::uint16_t data[16];
 
 std::uint16_t value_dac = 0;
 
+void OnButtonPressed() {
+    board::pins::StatusLed::Toggle();
+}
+
 extern "C" int entry(void) {
+    board::pins::UserButton::AttachInterrupt(OnButtonPressed);
+
     hal::Uart console_uart(huart2);
 
     Logger& logger = Logger::GetInstance();
@@ -36,8 +42,6 @@ extern "C" int entry(void) {
     }
 
     while (1) {
-        board::pins::StatusLed::Toggle();
-
         HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, value_dac);
 
         auto adc_value = adc1.Read();
