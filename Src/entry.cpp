@@ -24,7 +24,7 @@ void OnButtonPressed() {
     board::pins::StatusLed::Toggle();
 }
 
-extern "C" int entry(void) {
+extern "C" int Entry(void) {
     board::pins::UserButton::AttachInterrupt(OnButtonPressed);
 
     hal::Uart console_uart(huart2);
