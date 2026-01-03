@@ -19,6 +19,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+#include "adc.h"
+#include "dac.h"
+#include "dma.h"
 #include "gpio.h"
 #include "usart.h"
 
@@ -86,7 +89,10 @@ int main(void) {
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
+    MX_DMA_Init();
     MX_USART2_UART_Init();
+    MX_ADC1_Init();
+    MX_DAC1_Init();
     /* USER CODE BEGIN 2 */
 
     entry();

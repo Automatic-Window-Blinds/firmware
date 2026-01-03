@@ -80,6 +80,22 @@ public:
     void LogBuffer(const uint8_t* data, size_t length);
 
     /**
+     * @brief  Dumps a raw 16-bit word array as a readable hex sequence.
+     * @param  data   Pointer to the 16-bit word array.
+     * @param  length Number of words to read.
+     * @note   Output format: "[ AABB 01FF 5544 ]"
+     */
+    void LogBuffer(const uint16_t* data, size_t length);
+
+    /**
+     * @brief  Dumps a raw 32-bit word array as a readable hex sequence.
+     * @param  data   Pointer to the 32-bit word array.
+     * @param  length Number of words to read.
+     * @note   Output format: "[ AABBCCDD 01FF5544 ]"
+     */
+    void LogBuffer(const uint32_t* data, size_t length);
+
+    /**
      * @brief  Sends ANSI escape codes to clear the terminal screen.
      * @note   Also resets the cursor position to the top-left (0,0).
      */
@@ -101,4 +117,7 @@ private:
     Logger() = default;
 
     hal::Uart* transport_ = nullptr;
+
+    template <typename DataType>
+    void LogBuffer_(const char* format, const DataType* data, std::size_t length);
 };
