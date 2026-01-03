@@ -37,12 +37,25 @@ void Logger::LogHex(uint32_t value) {
     Logf("0x%" PRIX32 "\r\n", value);
 }
 
-void Logger::LogBuffer(const uint8_t* data, size_t length) {
+template <typename DataType>
+void Logger::LogBuffer_(const char* format, const DataType* data, std::size_t length) {
     Write("[ ", 2);
-    for (size_t i = 0; i < length; i++) {
-        Logf("%02X ", data[i]);
+    for (std::size_t i = 0; i < length; i++) {
+        Logf(format, data[i]);
     }
     Write("]\r\n", 3);
+}
+
+void Logger::LogBuffer(const uint8_t* data, size_t length) {
+    LogBuffer_<uint8_t>("%02X ", data, length);
+}
+
+void Logger::LogBuffer(const uint16_t* data, size_t length) {
+    LogBuffer_<uint16_t>("%04X ", data, length);
+}
+
+void Logger::LogBuffer(const uint32_t* data, size_t length) {
+    LogBuffer_<uint32_t>("%08X ", data, length);
 }
 
 void Logger::Clear() {

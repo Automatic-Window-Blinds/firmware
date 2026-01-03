@@ -44,6 +44,9 @@ extern "C" int entry(void) {
             logger.LogLine("ADC Avg Error");
         }
 
+        logger.LogLine("Buffer Dump:");
+        logger.LogBuffer(data, 16);
+
         HAL_Delay(500);
     }
 }
