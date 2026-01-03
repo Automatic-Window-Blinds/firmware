@@ -31,11 +31,17 @@ extern "C" int entry(void) {
         auto adc_value = adc1.Read();
 
         if (adc_value.has_value()) {
-            // Success: extract value
             logger.Logf("Val: %u\r\n", adc_value.value());
         } else {
-            // Error: Handle timeout/bounds error
             logger.LogLine("ADC Read Error");
+        }
+
+        auto adc_avg = adc1.ReadAverage();
+
+        if (adc_avg.has_value()) {
+            logger.Logf("Avg: %u\r\n", adc_avg.value());
+        } else {
+            logger.LogLine("ADC Avg Error");
         }
 
         HAL_Delay(500);

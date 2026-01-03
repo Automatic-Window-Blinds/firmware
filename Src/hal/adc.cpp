@@ -1,5 +1,7 @@
 #include "hal/adc.hpp"
 
+#include <cstring>
+
 #include "stm32l4xx_hal_def.h"
 
 namespace hal {
@@ -14,7 +16,11 @@ bool Adc<SampleType>::Start(SampleType* buffer, std::size_t length) {
         return false;
     }
 
+    // Ensure any previous operation is stopped
     Stop();
+
+    // Ensure buffer is zeroed out, this makes ReadAverage() more predictable
+    std::memset(buffer, 0, length * sizeof(SampleType));
 
     buffer_ = buffer;
     length_ = length;
@@ -73,6 +79,22 @@ std::optional<SampleType> Adc<SampleType>::Read(std::size_t index) {
 
         return val;
     }
+}
+
+template <typename SampleType>
+std::optional<SampleType> Adc<SampleType>::ReadAverage() {
+    if (buffer_ == nullptr || length_ == 0) {
+        return std::nullopt;  // Not Started
+    }
+
+    std::uint64_t sum = 0;
+
+    volatile SampleType* dma_view = buffer_;
+    for (std::size_t i = 0; i < length_; ++i) {
+        sum += dma_view[i];
+    }
+
+    return static_cast<SampleType>(sum / length_);
 }
 
 // -----------------------------------------------------------------------------
