@@ -26,7 +26,7 @@ void Logger::Log(const char* message) {
 }
 
 void Logger::Log(const int value) {
-    Logf("%" PRId16 "\r\n", value);
+    Logf("%" PRIi16 "\r\n", value);
 }
 
 void Logger::LogLine(const char* line) {
@@ -47,15 +47,20 @@ void Logger::LogBuffer_(const char* format, const DataType* data, std::size_t le
 }
 
 void Logger::LogBuffer(const uint8_t* data, size_t length) {
-    LogBuffer_<uint8_t>("%02X ", data, length);
+    LogBuffer_<uint8_t>("%" PRIu8 " ", data, length);
 }
 
 void Logger::LogBuffer(const uint16_t* data, size_t length) {
-    LogBuffer_<uint16_t>("%04X ", data, length);
+    LogBuffer_<uint16_t>("%" PRIu16 " ", data, length);
 }
 
 void Logger::LogBuffer(const uint32_t* data, size_t length) {
-    LogBuffer_<uint32_t>("%08X ", data, length);
+    LogBuffer_<uint32_t>("%" PRIu32 " ", data, length);
+}
+
+// TODO: Maybe want to template this? Make an unsigned version?
+void Logger::Plot(const char* name, long value) {
+    Logf(">%s:%" PRIi32 "\r\n", name, value);
 }
 
 void Logger::Clear() {
