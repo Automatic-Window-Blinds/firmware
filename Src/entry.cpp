@@ -45,6 +45,13 @@ extern "C" int Entry(void) {
         auto adc_value = adc1.Read();
         auto adc_avg = adc1.ReadAverage();
 
+        if (!adc_value.has_value()) {
+            logger.Logf("ADC Read Error: %d\r\n", static_cast<int>(adc_value.error()));
+        }
+        if (!adc_avg.has_value()) {
+            logger.Logf("ADC Avg Error: %d\r\n", static_cast<int>(adc_avg.error()));
+        }
+
         logger.Plot("dac", value_dac);
         logger.Plot("adc", adc_value.has_value() ? adc_value.value() : 0xFFFF);
         logger.Plot("avg", adc_avg.has_value() ? adc_avg.value() : 0xFFFF);
