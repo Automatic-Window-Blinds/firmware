@@ -41,17 +41,26 @@ public:
     void Lock() { HAL_GPIO_LockPin(hal::detail::PortPtr(pin_.port), pin_.mask); }
 
     /**
+     * @brief Registers a function to be called when this pin triggers an interrupt.
+     * @param callback Function pointer (void function(void)).
+     * @warning You must Enable the EXTI Interrupt in CubeMX NVIC settings!
+     */
+    void AttachInterrupt(void (*callback)(void));
+
+    /**
      * @brief Writes a Level value to the pin.
      * @param level Level::High or Level::Low.
      * @pre The pin must be configured as an output.
      */
     void Write(Level level);
+
     /**
      * @brief Writes a boolean value to the pin.
      * @param high `true` = HIGH, `false` = LOW.
      * @pre The pin must be configured as an output.
      */
     void Write(bool high);
+
     /**
      * @brief Writes an integer value to the pin.
      * @param v Non-zero = HIGH, zero = LOW.
@@ -60,39 +69,43 @@ public:
     void Write(int v);
 
     /**
+     * @brief Drives the pin HIGH.
+     * @pre The pin must be configured as an output.
+     */
+    void Set();
+
+    /**
+     * @brief Drives the pin LOW.
+     * @pre The pin must be configured as an output.
+     */
+    void Clear();
+
+    /**
+     * @brief Toggles the pin state.
+     * @pre The pin must be configured as an output.
+     */
+    void Toggle();
+
+    /**
      * @brief Reads the pin state as a Level enumeration.
      * @return Level::High or Level::Low.
      * @pre The pin must be configured as an input.
      */
     Level ReadLevel() const;
+
     /**
      * @brief Reads the pin state as an integer.
      * @return `1` if HIGH, `0` if LOW.
      * @pre The pin must be configured as an input.
      */
     int Read() const;
+
     /**
      * @brief Checks if the pin is currently HIGH.
      * @return `true` if HIGH, `false` if LOW.
      * @pre The pin must be configured as an input.
      */
     bool IsHigh() const;
-
-    /**
-     * @brief Drives the pin HIGH.
-     * @pre The pin must be configured as an output.
-     */
-    void Set();
-    /**
-     * @brief Drives the pin LOW.
-     * @pre The pin must be configured as an output.
-     */
-    void Clear();
-    /**
-     * @brief Toggles the pin state.
-     * @pre The pin must be configured as an output.
-     */
-    void Toggle();
 
     /**
      * @brief Gets the raw Pin struct for use by other HAL drivers.

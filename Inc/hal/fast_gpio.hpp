@@ -17,7 +17,8 @@ void RegisterExtiCallback(uint8_t index, void (*cb)(void));
  * @tparam PIN   The GPIO pin mask (e.g., GPIO_PIN_5).
  *
  * Uses C++ templates and static methods for zero-overhead abstraction.
- * All operations are inlined; cannot be instantiated.
+ * All operations are inlined; cannot be instantiated. Ideal for on-board
+ * LEDs, buttons, and performance-critical GPIO tasks.
  */
 template <PortBase PORT, PinMask PIN>
 class FastGpio {
@@ -51,12 +52,12 @@ public:
     }
 
     /**
-     * @brief Writes an integer value to the pin (non-zero = HIGH, zero = LOW).
-     * @param v Integer value.
+     * @brief Writes a Level enumeration value to the pin.
+     * @param level Level::High or Level::Low.
      */
     [[gnu::always_inline]]
-    static inline void Write(int v) {
-        Write(v != 0);
+    static inline void Write(Level level) {
+        Write(level == Level::High);
     }
 
     /**
@@ -69,12 +70,12 @@ public:
     }
 
     /**
-     * @brief Writes a Level enumeration value to the pin.
-     * @param level Level::High or Level::Low.
+     * @brief Writes an integer value to the pin (non-zero = HIGH, zero = LOW).
+     * @param v Integer value.
      */
     [[gnu::always_inline]]
-    static inline void Write(Level level) {
-        Write(level == Level::High);
+    static inline void Write(int v) {
+        Write(v != 0);
     }
 
     /**

@@ -2,6 +2,17 @@
 
 namespace hal {
 
+namespace detail {
+void RegisterExtiCallback(uint8_t index, void (*cb)(void));
+}
+
+void Gpio::AttachInterrupt(void (*callback)(void)) {
+    const uint8_t pin_index = __builtin_ctz(pin_.mask);
+
+    // Register the callback in our central array
+    detail::RegisterExtiCallback(pin_index, callback);
+}
+
 void Gpio::Write(Level level) {
     Write(level == Level::High);
 }
