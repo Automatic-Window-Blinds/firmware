@@ -52,14 +52,14 @@ void Adc<SampleType>::Stop() {
 }
 
 template <typename SampleType>
-std::optional<SampleType> Adc<SampleType>::Read(std::size_t index) {
+std::expected<SampleType, std::errc> Adc<SampleType>::Read(std::size_t index) {
     if (buffer_ == nullptr || length_ == 0) {
-        return std::nullopt;  // Not Started
+        return std::unexpected(std::errc::invalid_argument);  // Not Started
     }
 
     if (IsDmaMode()) {
         if (index >= length_) {
-            return std::nullopt;
+            return std::unexpected(std::errc::invalid_argument);
         }
 
         volatile SampleType* dma_view = buffer_;
@@ -68,10 +68,10 @@ std::optional<SampleType> Adc<SampleType>::Read(std::size_t index) {
         // Strictness Check: Polling logic here only supports the 'current' conversion.
         // Requesting index 1+ implies we have a history buffer, which polling doesn't provide.
         if (index > 0) {
-            return std::nullopt;
+            return std::unexpected(std::errc::invalid_argument);
         }
         if (HAL_ADC_PollForConversion(&handle_, MAX_TIMEOUT_MS_) != HAL_OK) {
-            return std::nullopt;
+            return std::unexpected(std::errc::timed_out);
         }
 
         SampleType val = static_cast<SampleType>(HAL_ADC_GetValue(&handle_));
@@ -82,12 +82,12 @@ std::optional<SampleType> Adc<SampleType>::Read(std::size_t index) {
 }
 
 template <typename SampleType>
-std::optional<SampleType> Adc<SampleType>::ReadAverage() {
+std::expected<SampleType, std::errc> Adc<SampleType>::ReadAverage() {
     if (buffer_ == nullptr || length_ == 0) {
-        return std::nullopt;  // Not Started
+        return std::unexpected(std::errc::invalid_argument);  // Not Started
     }
 
-    std::uint64_t sum = 0;
+    uint64_t sum = 0;
 
     volatile SampleType* dma_view = buffer_;
     for (std::size_t i = 0; i < length_; ++i) {
@@ -103,8 +103,8 @@ std::optional<SampleType> Adc<SampleType>::ReadAverage() {
 // These lines force the compiler to generate code for these specific types.
 // If you try to use Adc<float>, the linker will throw an error.
 
-template class Adc<std::uint8_t>;   // 8-bit DMA
-template class Adc<std::uint16_t>;  // 16-bit DMA (Half-Word) - Most Common
-template class Adc<std::uint32_t>;  // 32-bit DMA (Word)
+template class Adc<uint8_t>;   // 8-bit DMA
+template class Adc<uint16_t>;  // 16-bit DMA (Half-Word) - Most Common
+template class Adc<uint32_t>;  // 32-bit DMA (Word)
 
 }  // namespace hal

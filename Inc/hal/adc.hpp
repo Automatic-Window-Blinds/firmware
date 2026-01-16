@@ -2,7 +2,8 @@
 
 #include <stm32l4xx_hal.h>
 
-#include <optional>
+#include <expected>
+#include <system_error>
 
 namespace hal {
 
@@ -15,7 +16,7 @@ namespace hal {
  * - 12-bit ADC + Word DMA     -> uint32_t
  * - 8-bit  ADC + Byte DMA     -> uint8_t
  */
-template <typename SampleType = std::uint16_t>
+template <typename SampleType = uint16_t>
 class Adc {
 public:
     /**
@@ -46,13 +47,13 @@ public:
      * @param index Array index to read (DMA only).
      * @return Value on success, std::nullopt on error/timeout.
      */
-    std::optional<SampleType> Read(std::size_t index = 0);
+    std::expected<SampleType, std::errc> Read(std::size_t index = 0);
 
     /**
      * @brief Calculates the average of the entire DMA buffer.
      * @return Average value, or std::nullopt if not running.
      */
-    std::optional<SampleType> ReadAverage();
+    std::expected<SampleType, std::errc> ReadAverage();
 
     uint32_t GetMaxTimeoutMs() const { return MAX_TIMEOUT_MS_; }
     void SetMaxTimeoutMs(std::size_t timeout_ms) { MAX_TIMEOUT_MS_ = timeout_ms; }
