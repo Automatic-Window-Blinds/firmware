@@ -47,6 +47,13 @@ extern "C" int Entry(void) {
         auto adc_value = adc1.Read();
         auto adc_avg = adc1.ReadAverage();
 
+        if (!adc_value.has_value()) {
+            logger.Logf("ADC Read Error: %d\r\n", static_cast<int>(adc_value.error()));
+        }
+        if (!adc_avg.has_value()) {
+            logger.Logf("ADC Avg Error: %d\r\n", static_cast<int>(adc_avg.error()));
+        }
+
         // This output is parsed by Teleplot.
         logger.Logf(">dac:%" PRIu16 "\r\n", value_dac);
         logger.Logf(">adc:%" PRIu16 "\r\n", adc_value.has_value() ? adc_value.value() : 0xFFFF);
