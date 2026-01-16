@@ -1,5 +1,3 @@
-#include <cinttypes>
-
 #include "adc.h"
 #include "board/boards/nucleo_l476rg.hpp"
 #include "dac.h"
@@ -54,10 +52,9 @@ extern "C" int Entry(void) {
             logger.Logf("ADC Avg Error: %d\r\n", static_cast<int>(adc_avg.error()));
         }
 
-        // This output is parsed by Teleplot.
-        logger.Logf(">dac:%" PRIu16 "\r\n", value_dac);
-        logger.Logf(">adc:%" PRIu16 "\r\n", adc_value.has_value() ? adc_value.value() : 0xFFFF);
-        logger.Logf(">avg:%" PRIu16 "\r\n", adc_avg.has_value() ? adc_avg.value() : 0xFFFF);
+        logger.Plot("dac", value_dac);
+        logger.Plot("adc", adc_value.has_value() ? adc_value.value() : 0xFFFF);
+        logger.Plot("avg", adc_avg.has_value() ? adc_avg.value() : 0xFFFF);
 
         value_dac++;
         if (value_dac > 4095) {

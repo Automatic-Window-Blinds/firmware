@@ -96,6 +96,14 @@ public:
     void LogBuffer(const uint32_t* data, size_t length);
 
     /**
+     * @brief  Plot a data point to the serial plotter in teleplot format
+     * @param  name  The name/label for the data series
+     * @param  value The numeric value to plot
+     * @note   Outputs in format ">name:value\r\n" compatible with teleplot and other serial plotters
+     */
+    void Plot(const char* name, long value);
+
+    /**
      * @brief  Sends ANSI escape codes to clear the terminal screen.
      * @note   Also resets the cursor position to the top-left (0,0).
      */
