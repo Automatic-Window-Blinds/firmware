@@ -4,6 +4,7 @@
 #include "hal/adc.hpp"
 #include "hal/uart.hpp"
 #include "usart.h"
+#include "util/error_codes.hpp"
 #include "util/logger.hpp"
 
 // Currently we are targeting the Nucleo-L476RG board because that is all I have on hand.
@@ -46,15 +47,15 @@ extern "C" int Entry(void) {
         auto adc_avg = adc1.ReadAverage();
 
         if (!adc_value.has_value()) {
-            logger.Logf("ADC Read Error: %d\r\n", static_cast<int>(adc_value.error()));
+            logger.Logf("ADC Read Error: %s\r\n", awb::ToString(adc_value.error()));
         }
         if (!adc_avg.has_value()) {
-            logger.Logf("ADC Avg Error: %d\r\n", static_cast<int>(adc_avg.error()));
+            logger.Logf("ADC Avg Error: %s\r\n", awb::ToString(adc_avg.error()));
         }
 
         logger.Plot("dac", value_dac);
-        logger.Plot("adc", adc_value.has_value() ? adc_value.value() : 0xFFFF);
-        logger.Plot("avg", adc_avg.has_value() ? adc_avg.value() : 0xFFFF);
+        logger.Plot("adc", adc_value.value_or(0xFFFF));
+        logger.Plot("avg", adc_avg.value_or(0xFFFF));
 
         value_dac++;
         if (value_dac > 4095) {

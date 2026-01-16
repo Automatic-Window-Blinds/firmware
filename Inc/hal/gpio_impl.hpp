@@ -11,11 +11,9 @@ namespace hal::detail {
  */
 static inline uint32_t OutputTypeToAfMode(const OutputType type) {
     switch (type) {
-        case hal::OutputType::OpenDrain:
-            return GPIO_MODE_AF_OD;
+        case hal::OutputType::OpenDrain: return GPIO_MODE_AF_OD;
         case hal::OutputType::PushPull:
-        default:
-            return GPIO_MODE_AF_PP;
+        default:                         return GPIO_MODE_AF_PP;
     }
 }
 /**
@@ -25,11 +23,9 @@ static inline uint32_t OutputTypeToAfMode(const OutputType type) {
  */
 static inline uint32_t OutputTypeToGpioMode(const OutputType type) {
     switch (type) {
-        case hal::OutputType::OpenDrain:
-            return GPIO_MODE_OUTPUT_OD;
+        case hal::OutputType::OpenDrain: return GPIO_MODE_OUTPUT_OD;
         case hal::OutputType::PushPull:
-        default:
-            return GPIO_MODE_OUTPUT_PP;
+        default:                         return GPIO_MODE_OUTPUT_PP;
     }
 }
 
@@ -40,15 +36,11 @@ static inline uint32_t OutputTypeToGpioMode(const OutputType type) {
  */
 static inline uint32_t SpeedToGpioSpeed(const Speed speed) {
     switch (speed) {
-        case hal::Speed::Medium:
-            return GPIO_SPEED_FREQ_MEDIUM;
-        case hal::Speed::High:
-            return GPIO_SPEED_FREQ_HIGH;
-        case hal::Speed::VeryHigh:
-            return GPIO_SPEED_FREQ_VERY_HIGH;
+        case hal::Speed::Medium:   return GPIO_SPEED_FREQ_MEDIUM;
+        case hal::Speed::High:     return GPIO_SPEED_FREQ_HIGH;
+        case hal::Speed::VeryHigh: return GPIO_SPEED_FREQ_VERY_HIGH;
         case hal::Speed::Low:
-        default:
-            return GPIO_SPEED_FREQ_LOW;
+        default:                   return GPIO_SPEED_FREQ_LOW;
     }
 }
 
@@ -59,13 +51,10 @@ static inline uint32_t SpeedToGpioSpeed(const Speed speed) {
  */
 static inline uint32_t PullToGpioPull(const Pull pull) {
     switch (pull) {
-        case hal::Pull::Up:
-            return GPIO_PULLUP;
-        case hal::Pull::Down:
-            return GPIO_PULLDOWN;
+        case hal::Pull::Up:   return GPIO_PULLUP;
+        case hal::Pull::Down: return GPIO_PULLDOWN;
         case hal::Pull::None:
-        default:
-            return GPIO_NOPULL;
+        default:              return GPIO_NOPULL;
     }
 }
 
@@ -76,21 +65,11 @@ static inline uint32_t PullToGpioPull(const Pull pull) {
  */
 static inline void EnableGpioClock(const PortBase port_base) {
     switch (port_base) {
-        case GPIOA_BASE:
-            __HAL_RCC_GPIOA_CLK_ENABLE();
-            break;
-        case GPIOB_BASE:
-            __HAL_RCC_GPIOB_CLK_ENABLE();
-            break;
-        case GPIOC_BASE:
-            __HAL_RCC_GPIOC_CLK_ENABLE();
-            break;
-        case GPIOD_BASE:
-            __HAL_RCC_GPIOD_CLK_ENABLE();
-            break;
-        case GPIOE_BASE:
-            __HAL_RCC_GPIOE_CLK_ENABLE();
-            break;
+        case GPIOA_BASE: __HAL_RCC_GPIOA_CLK_ENABLE(); break;
+        case GPIOB_BASE: __HAL_RCC_GPIOB_CLK_ENABLE(); break;
+        case GPIOC_BASE: __HAL_RCC_GPIOC_CLK_ENABLE(); break;
+        case GPIOD_BASE: __HAL_RCC_GPIOD_CLK_ENABLE(); break;
+        case GPIOE_BASE: __HAL_RCC_GPIOE_CLK_ENABLE(); break;
     }
 }
 

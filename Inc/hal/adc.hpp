@@ -3,7 +3,8 @@
 #include <stm32l4xx_hal.h>
 
 #include <expected>
-#include <system_error>
+
+#include "util/error_codes.hpp"
 
 namespace hal {
 
@@ -47,13 +48,13 @@ public:
      * @param index Array index to read (DMA only).
      * @return Value on success, std::nullopt on error/timeout.
      */
-    std::expected<SampleType, std::errc> Read(std::size_t index = 0);
+    std::expected<SampleType, awb::Error> Read(std::size_t index = 0);
 
     /**
      * @brief Calculates the average of the entire DMA buffer.
      * @return Average value, or std::nullopt if not running.
      */
-    std::expected<SampleType, std::errc> ReadAverage();
+    std::expected<SampleType, awb::Error> ReadAverage();
 
     uint32_t GetMaxTimeoutMs() const { return MAX_TIMEOUT_MS_; }
     void SetMaxTimeoutMs(std::size_t timeout_ms) { MAX_TIMEOUT_MS_ = timeout_ms; }
