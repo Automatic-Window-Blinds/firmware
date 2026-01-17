@@ -65,11 +65,33 @@ static inline uint32_t PullToGpioPull(const Pull pull) {
  */
 static inline void EnableGpioClock(const PortBase port_base) {
     switch (port_base) {
+#ifdef GPIOA_BASE
         case GPIOA_BASE: __HAL_RCC_GPIOA_CLK_ENABLE(); break;
+#endif
+#ifdef GPIOB_BASE
         case GPIOB_BASE: __HAL_RCC_GPIOB_CLK_ENABLE(); break;
+#endif
+#ifdef GPIOC_BASE
         case GPIOC_BASE: __HAL_RCC_GPIOC_CLK_ENABLE(); break;
+#endif
+#ifdef GPIOD_BASE
         case GPIOD_BASE: __HAL_RCC_GPIOD_CLK_ENABLE(); break;
+#endif
+#ifdef GPIOE_BASE
         case GPIOE_BASE: __HAL_RCC_GPIOE_CLK_ENABLE(); break;
+#endif
+#ifdef GPIOF_BASE
+        case GPIOF_BASE: __HAL_RCC_GPIOF_CLK_ENABLE(); break;
+#endif
+#ifdef GPIOG_BASE
+        case GPIOG_BASE: __HAL_RCC_GPIOG_CLK_ENABLE(); break;
+#endif
+#ifdef GPIOH_BASE
+        case GPIOH_BASE: __HAL_RCC_GPIOH_CLK_ENABLE(); break;
+#endif
+        default:
+            // Optional: Handle invalid port or log an error
+            break;
     }
 }
 

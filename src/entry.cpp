@@ -13,6 +13,9 @@
 // This test application outputs a ramp signal on DAC channel 1.
 // For the nucleo-l476rg, place a jumper between A0 (PA0) and A2 (PA4) to
 // connect the DAC output to the ADC input.
+// For the nucleo-l432kc, place a jumper between A3 and A5.
+// A push button can be used to toggle the on-board status LED (B1 on nucleo-l476rg, B3 on nucleo-l432kc).
+// For the nucleo-l432kc, the user button must be added manually and connected to D11 (PB5).
 
 hal::Adc<std::uint16_t> adc1(hadc1);
 std::uint16_t data[16];
