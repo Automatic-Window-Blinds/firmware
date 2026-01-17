@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include "stm32l4xx_hal_def.h"
+#include "util/error_codes.hpp"
 
 namespace hal {
 
@@ -52,14 +53,14 @@ void Adc<SampleType>::Stop() {
 }
 
 template <typename SampleType>
-std::expected<SampleType, std::errc> Adc<SampleType>::Read(std::size_t index) {
+std::expected<SampleType, awb::Error> Adc<SampleType>::Read(std::size_t index) {
     if (buffer_ == nullptr || length_ == 0) {
-        return std::unexpected(std::errc::invalid_argument);  // Not Started
+        return std::unexpected(awb::Error::InvalidParam);  // Not Started
     }
 
     if (IsDmaMode()) {
         if (index >= length_) {
-            return std::unexpected(std::errc::invalid_argument);
+            return std::unexpected(awb::Error::InvalidParam);
         }
 
         volatile SampleType* dma_view = buffer_;
@@ -68,10 +69,10 @@ std::expected<SampleType, std::errc> Adc<SampleType>::Read(std::size_t index) {
         // Strictness Check: Polling logic here only supports the 'current' conversion.
         // Requesting index 1+ implies we have a history buffer, which polling doesn't provide.
         if (index > 0) {
-            return std::unexpected(std::errc::invalid_argument);
+            return std::unexpected(awb::Error::InvalidParam);
         }
         if (HAL_ADC_PollForConversion(&handle_, MAX_TIMEOUT_MS_) != HAL_OK) {
-            return std::unexpected(std::errc::timed_out);
+            return std::unexpected(awb::Error::Timeout);
         }
 
         SampleType val = static_cast<SampleType>(HAL_ADC_GetValue(&handle_));
@@ -82,9 +83,9 @@ std::expected<SampleType, std::errc> Adc<SampleType>::Read(std::size_t index) {
 }
 
 template <typename SampleType>
-std::expected<SampleType, std::errc> Adc<SampleType>::ReadAverage() {
+std::expected<SampleType, awb::Error> Adc<SampleType>::ReadAverage() {
     if (buffer_ == nullptr || length_ == 0) {
-        return std::unexpected(std::errc::invalid_argument);  // Not Started
+        return std::unexpected(awb::Error::InvalidParam);  // Not Started
     }
 
     uint64_t sum = 0;
