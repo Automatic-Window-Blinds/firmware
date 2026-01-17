@@ -5,3 +5,11 @@
 .vscode/ipch
 compile_commands.json
 .cache/
+
+# STM32CubeMX / STM32CubeIDE generated junk
+Drivers/
+.project
+.cproject
+.mxproject
+.settings/
+Makefile
