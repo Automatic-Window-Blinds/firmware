@@ -1,5 +1,5 @@
 #include "adc.h"
-#include "board/boards/nucleo_l476rg.hpp"
+#include "board_defs.hpp"
 #include "dac.h"
 #include "hal/adc.hpp"
 #include "hal/uart.hpp"
